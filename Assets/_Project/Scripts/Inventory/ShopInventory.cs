@@ -16,7 +16,7 @@ public class ShopInventory : Inventory
     protected override void Awake()
     {
         base.Awake();
-        titleText.text = "NFT SHOP INVENTORY";
+        titleText.text = "NFT INVENTORY";
     }
 
     private void OnEnable()

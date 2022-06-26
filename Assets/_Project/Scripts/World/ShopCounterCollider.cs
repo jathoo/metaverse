@@ -10,7 +10,6 @@ public class ShopCounterCollider : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        // We only want to enter the shop if the player is free :)
         if (GameManager.Instance.GetCurrentState() != GameManager.State.Free) return;
         
         if (other.CompareTag("Player"))

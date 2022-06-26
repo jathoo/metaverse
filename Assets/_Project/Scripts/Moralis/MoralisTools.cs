@@ -64,7 +64,6 @@ public class MoralisTools
 
         foreach (char ch in stringToConvert)
         {
-            //Apply whatever algorithm you want here. Adding up each char numerical value works for this application.
             longFromString += (long) char.GetNumericValue(ch);
         }
 

@@ -26,7 +26,7 @@ public class PlayerInventory : Inventory
     {
         base.Awake();
         
-        titleText.text = "PLAYER INVENTORY";
+        titleText.text = "INVENTORY - PLAYER";
 
         _gameInputActions = new GameInputActions();
         _openInventoryAction = _gameInputActions.General.OpenInventory;
@@ -67,7 +67,6 @@ public class PlayerInventory : Inventory
 
     private async void LoadPurchasedItems()
     {
-        //We get our wallet address.
         MoralisUser user = await Moralis.GetUserAsync();
         var playerAddress = user.authData["moralisEth"]["id"].ToString();
 
@@ -80,7 +79,6 @@ public class PlayerInventory : Inventory
             
             List<NftOwner> nftOwners = noc.Result;
 
-            // We only proceed if we find some
             if (!nftOwners.Any())
             {
                 Debug.Log("You don't own any NFT");
@@ -91,9 +89,7 @@ public class PlayerInventory : Inventory
             {
                 if (nftOwner.Metadata == null)
                 {
-                    // Sometimes GetNFTsForContract fails to get NFT Metadata. We need to re-sync
                     Moralis.GetClient().Web3Api.Token.ReSyncMetadata(nftOwner.TokenAddress, nftOwner.TokenId, GameManager.ContractChain);
-                    Debug.Log("We couldn't get NFT Metadata. Re-syncing...");
                     continue;
                 }
                 

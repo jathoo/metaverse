@@ -27,7 +27,6 @@ public class PurchaseItemManager : MonoBehaviour
     [Header("Transaction Info")]
     [SerializeField] private TextMeshProUGUI transactionInfoText;
 
-    //Control variables
     private ItemData _currentItemData;
 
     
@@ -70,8 +69,6 @@ public class PurchaseItemManager : MonoBehaviour
         
         transactionInfoText.text = "Metadata saved successfully";
 
-        // I'm assuming that this is creating a different tokenId from the already minted tokens in the contract.
-        // I can do that because I know I'm converting a unique objectId coming from the MoralisDB.
         long tokenId = MoralisTools.ConvertStringToLong(_currentItemData.objectId);
         
         transactionInfoText.text = "Please confirm transaction in your wallet";
@@ -122,7 +119,6 @@ public class PurchaseItemManager : MonoBehaviour
     
     #region PRIVATE_METHODS
 
-    // We are minting the NFT and transferring it to the player
     private async Task<string> PurchaseItemFromContract(BigInteger tokenId, string metadataUrl)
     {
         byte[] data = Array.Empty<byte>();
@@ -133,7 +129,6 @@ public class PurchaseItemManager : MonoBehaviour
             data
         };
 
-        // Set gas estimate
         HexBigInteger value = new HexBigInteger("0x0");
         HexBigInteger gas = new HexBigInteger(0);
         HexBigInteger gasPrice = new HexBigInteger("0x0");
@@ -145,16 +140,13 @@ public class PurchaseItemManager : MonoBehaviour
 
     private async UniTask<string> CreateIpfsMetadata()
     {
-        // 1. Build Metadata
         object metadata = MoralisTools.BuildMetadata(_currentItemData.name, _currentItemData.description, _currentItemData.imageUrl);
 
         string metadataName = $"{_currentItemData.name}_{_currentItemData.objectId}.json";
 
-        // 2. Encoding JSON
         string json = JsonConvert.SerializeObject(metadata);
         string base64Data = Convert.ToBase64String(Encoding.UTF8.GetBytes(json));
       
-        // 3. Save metadata to IPFS
         string ipfsMetadataPath = await MoralisTools.SaveToIpfs(metadataName, base64Data);
 
         return ipfsMetadataPath;
